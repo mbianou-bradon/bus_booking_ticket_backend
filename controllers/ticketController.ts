@@ -50,6 +50,7 @@ export const getTicket = async(req: Express.Request, res:Express.Response, next:
     }
    
     const ticket = await Ticket.findById(id)
+    .populate([{ path: "user", select: "-createdAt, -updatedAt -email -phoneNumber"}, { path: "agency", select: "-createdAt -updatedAt"}])
 
     if(!ticket){
         return res.status(404).json({message: "Ticket Doesn't exist! Not Found!"})
@@ -76,6 +77,7 @@ export const getAllTicket = async (req: Express.Request, res: Express.Response, 
 
     try {
         const allTickets = await Ticket.find({}).sort({ createdAt : -1 })
+        .populate([{ path: "User", select: "-createdAt, -updatedAt -email -phoneNumber"}, { path: "Agency", select: "-createdAt -updatedAt"}])
 
         return next(
             res.status(200).json({
