@@ -1,0 +1,28 @@
+{
+  "name": "bus_booking_tickets_backend",
+  "version": "1.0.0",
+  "description": "Server API for bus booking tickets Mobile Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node ./build/server.js",
+    "dev": "nodemon server.ts"
+  },
+  "author": "Mbianou Bradon",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.2.1",
+    "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.2.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
