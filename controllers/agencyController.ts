@@ -3,8 +3,15 @@ import mongoose from "mongoose"
 import Agency from "../models/agencyModel"
 
 
-
-// Create a new Agency and store in database
+/**
+ * createAgency - Create a new Agency with information gotten from the request body
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the created data if positive or error message if fails
+ * 
+ */
 export const createAgency = async(req: Express.Request, res:Express.Response, next:any)=>{
 
     const agency = req.body
@@ -23,7 +30,15 @@ export const createAgency = async(req: Express.Request, res:Express.Response, ne
 }
 
 
-// Get a new Agency
+/**
+ * getAgency - Get One Agency from the Database with a particular id
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
 export const getAgency = async(req: Express.Request, res:Express.Response, next:any)=>{
     const { id }  = req.params;
 
@@ -47,7 +62,15 @@ export const getAgency = async(req: Express.Request, res:Express.Response, next:
 };
 
 
-//Get all Agencies
+/**
+ * getAllAgencies - Get all Agencies from the Database and sort it from latest to oldest
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
 export const getAllAgencies =async (req: Express.Request, res:Express.Response, next:any)=>{
    
     let page = Number(String(req.query.page)) - 1 || 0 ;
@@ -80,7 +103,15 @@ export const getAllAgencies =async (req: Express.Request, res:Express.Response, 
 
 
 
-// Update a Agency
+/**
+ * updateAgency - Update a particular Agency info with id gotten from request params
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
 export const updateAgency = async(req: Express.Request, res:Express.Response, next:any)=> {
     const { id } = req.params
 
@@ -115,7 +146,15 @@ export const updateAgency = async(req: Express.Request, res:Express.Response, ne
     )
 };
 
-// Delete an Agency
+/**
+ * deleteAgency - find an Agency by id and delete it from the database
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return a positive message if successfull or error message if fails
+ * 
+ */
 export const deleteAgency = async(req: Express.Request, res:Express.Response, next:any) => {
     const { id } = req.params;
 

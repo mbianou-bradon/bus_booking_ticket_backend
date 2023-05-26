@@ -1,10 +1,10 @@
 import Express from "express"
-import Ticket from "../models/userModel"
+import Destination from "../models/destinationModel"
 import mongoose from "mongoose";
 
 
 /**
- * createTicket - Create a new document with information gotten from the request body
+ * createDestination - Create a new destination with information gotten from the request body
  * @req : Incoming request argument
  * @res : response argument
  * @next : Function that proceed to the next Middleware
@@ -12,16 +12,16 @@ import mongoose from "mongoose";
  * Return : return the created data if positive or error message if fails
  * 
  */
-export const createTicket = async (req : Express.Request, res : Express.Response, next : any) => {
-    const ticketDetails = req.body
+export const createDestination = async (req : Express.Request, res : Express.Response, next : any) => {
+    const destinationDetails = req.body
 
     try {
-        const newTicket = await Ticket.create(ticketDetails);
+        const newDestination = await Destination.create(destinationDetails);
 
         return next(
             res.status(200).json({
                 status : "OK",
-                data : newTicket
+                data : newDestination
             })
         )
     } catch(error) {
@@ -34,7 +34,7 @@ export const createTicket = async (req : Express.Request, res : Express.Response
 }
 
 /**
- * getTicket - Get One Tickets from the Database with a particular id
+ * getUser - Get One Destination from the Database with a particular id
  * @req : Incoming request argument
  * @res : response argument
  * @next : Function that proceed to the next Middleware
@@ -42,60 +42,29 @@ export const createTicket = async (req : Express.Request, res : Express.Response
  * Return : return the fetched data if positive or error message if fails
  * 
  */
-export const getTicket = async(req: Express.Request, res:Express.Response, next:any)=>{
+export const getDestination = async(req: Express.Request, res:Express.Response, next:any)=>{
     const { id }  = req.params;
 
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({message: "Ticket Doesn't exist! Wrong id"})
+        return res.status(404).json({message: "Destination Doesn't exist! Wrong id"})
     }
    
-    const ticket = await Ticket.findById(id)
+    const destination = await Destination.findById(id)
 
-    if(!ticket){
-        return res.status(404).json({message: "Ticket Doesn't exist! Not Found!"})
+    if(!destination){
+        return res.status(404).json({message: "Destination Doesn't exist! Not Found!"})
     }
 
     return next(
         res.status(201).json({
             status: "OK",
-            data: ticket,
+            data: destination,
         })
     )
 };
 
 /**
- * getAllTicket - Get all Tickets from the Database and sort it from latest to oldest
- * @req : Incoming request argument
- * @res : response argument
- * @next : Function that proceed to the next Middleware
- * 
- * Return : return the fetched data if positive or error message if fails
- * 
- */ 
-export const getAllTicket = async (req: Express.Request, res: Express.Response, next:any) => {
-
-    try {
-        const allTickets = await Ticket.find({}).sort({ createdAt : -1 })
-
-        return next(
-            res.status(200).json({
-                status : "OK",
-                data : allTickets
-            })
-        )
-    }
-    catch (error) {
-        return next(
-            res.status(404).json({
-                message : `An Error Occured: ${error}`
-            })
-        )
-    }
-    
-}
-
-/**
- * updateTicket - Update a particular ticket with id gotten from request params
+ * getAllDestinations - Get all Destinations from the Database and sort it from latest to oldest
  * @req : Incoming request argument
  * @res : response argument
  * @next : Function that proceed to the next Middleware
@@ -103,28 +72,56 @@ export const getAllTicket = async (req: Express.Request, res: Express.Response, 
  * Return : return the fetched data if positive or error message if fails
  * 
  */
-export const updateTicket = async(req: Express.Request, res:Express.Response, next:any)=> {
+export const getAllDestinations = async(req : Express.Request, res: Express.Response, next : any) => {
+    try {
+        const allDestinations = await Destination.find({}).sort({ createdAt : -1 })
+
+        return next(
+            res.status(200).json({
+                status : "OK",
+                data : allDestinations
+            })
+        )
+    } catch(error) {
+        return next (
+            res.status(404).json({
+                message : `An Error Occurred ${error}`
+            })
+        )
+    }
+}
+
+/**
+ * updateDestination - Update a particular destination info with id gotten from request params
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
+export const updateDestination = async(req: Express.Request, res:Express.Response, next:any)=> {
     const { id } = req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)){
         return next(
             res.status(404).json({
                 status: "Not Found",
-                message: "Invalid Ticket ID"
+                message: "Invalid Destination ID"
             })
         )
     }
     
 
-    const ticket = await Ticket.findOneAndUpdate({_id: id}, {
+    const destination = await Destination.findOneAndUpdate({_id: id}, {
         ...req.body
     })
 
-    if(!ticket){
+    if(!destination){
         return next(
             res.status(404).json({
                 status: "Not Found",
-                message: "Ticket doesn't exist"
+                message: "Destination doesn't exist"
             })
         )
     }
@@ -132,13 +129,13 @@ export const updateTicket = async(req: Express.Request, res:Express.Response, ne
     return next(
         res.status(200).json({
             status: "OK",
-            data: ticket
+            data: destination
         })
     )
 };
 
 /**
- * deleteTicket - find a ticket by id and delete it from the database
+ * deleteDestination - find a Destination by id and delete it from the database
  * @req : Incoming request argument
  * @res : response argument
  * @next : Function that proceed to the next Middleware
@@ -146,25 +143,25 @@ export const updateTicket = async(req: Express.Request, res:Express.Response, ne
  * Return : return a positive message if successfull or error message if fails
  * 
  */
-export const deleteTicket = async(req: Express.Request, res:Express.Response, next:any) => {
+export const deleteDestination = async(req: Express.Request, res:Express.Response, next:any) => {
     const { id } = req.params;
 
     if(!mongoose.Types.ObjectId.isValid(id)){
         return next(
             res.status(404).json({
                 status: "Not Found",
-                message: "Ticket doesn't exist"
+                message: "Destination doesn't exist"
             })
         )
     }
 
-    const ticket = await Ticket.findOneAndDelete({_id: id})
+    const destination = await Destination.findOneAndDelete({_id: id})
 
-    if(!ticket){
+    if(!destination){
         return next(
             res.status(404).json({
                 status: "Not Found",
-                message: "Ticket doesn't exist"
+                message: "Destination doesn't exist"
             })
         )
     }
@@ -172,7 +169,7 @@ export const deleteTicket = async(req: Express.Request, res:Express.Response, ne
     return next(
         res.status(200).json({
             status: "OK",
-            data: ticket
+            data: destination
         })
     )
 };

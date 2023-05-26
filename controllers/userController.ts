@@ -2,6 +2,16 @@ import Express from "express"
 import User from "../models/userModel"
 import mongoose from "mongoose";
 
+
+/**
+ * createUser - Create a new user with information gotten from the request body
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the created data if positive or error message if fails
+ * 
+ */
 export const createUser = async (req : Express.Request, res : Express.Response, next : any) => {
     const userDetails = req.body
 
@@ -23,7 +33,15 @@ export const createUser = async (req : Express.Request, res : Express.Response, 
     }
 }
 
-// Get a new User
+/**
+ * getUser - Get One User from the Database with a particular id
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
 export const getUser = async(req: Express.Request, res:Express.Response, next:any)=>{
     const { id }  = req.params;
 
@@ -45,7 +63,43 @@ export const getUser = async(req: Express.Request, res:Express.Response, next:an
     )
 };
 
-// Update a User
+/**
+ * getAllUsers - Get all Users from the Database and sort it from latest to oldest
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
+export const getAllUsers = async(req : Express.Request, res: Express.Response, next : any) => {
+    try {
+        const allUsers = await User.find({}).sort({ createdAt : -1 })
+
+        return next(
+            res.status(200).json({
+                status : "OK",
+                data : allUsers
+            })
+        )
+    } catch(error) {
+        return next (
+            res.status(404).json({
+                message : `An Error Occurred ${error}`
+            })
+        )
+    }
+}
+
+/**
+ * updateUser - Update a particular User info with id gotten from request params
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
 export const updateUser = async(req: Express.Request, res:Express.Response, next:any)=> {
     const { id } = req.params
 
@@ -80,7 +134,15 @@ export const updateUser = async(req: Express.Request, res:Express.Response, next
     )
 };
 
-// Delete an User
+/**
+ * deleteUser - find a User by id and delete it from the database
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return a positive message if successfull or error message if fails
+ * 
+ */
 export const deleteUser = async(req: Express.Request, res:Express.Response, next:any) => {
     const { id } = req.params;
 
