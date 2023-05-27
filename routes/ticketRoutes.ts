@@ -10,7 +10,7 @@ router.get("/", getAllTicket)
 router.get("/:id", getTicket)
 
 // Create a New Ticket 
-router.post("/:id", createTicket)
+router.post("/", createTicket)
 
 // Update a Ticket
 router.patch("/:id", updateTicket)

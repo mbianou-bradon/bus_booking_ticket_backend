@@ -10,7 +10,7 @@ router.get("/", getAllAgencies)
 router.get("/:id", getAgency)
 
 // Create a New agency 
-router.post("/:id", createAgency)
+router.post("/", createAgency)
 
 // Update a agency
 router.patch("/:id", updateAgency)

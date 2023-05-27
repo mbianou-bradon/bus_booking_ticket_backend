@@ -10,7 +10,7 @@ router.get("/", getAllDestinations)
 router.get("/:id", getDestination)
 
 // Create a New Destination 
-router.post("/:id", createDestination)
+router.post("/", createDestination)
 
 // Update a Destionation
 router.patch("/:id", updateDestination)

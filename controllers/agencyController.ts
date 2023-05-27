@@ -72,33 +72,41 @@ export const getAgency = async(req: Express.Request, res:Express.Response, next:
  * 
  */
 export const getAllAgencies =async (req: Express.Request, res:Express.Response, next:any)=>{
-   
     let page = Number(String(req.query.page)) - 1 || 0 ;
     const limit = Number(String((req.query.limit))) || 10;
     const search = req.query.search || "";
-
     const query = {
-        agencyName: { $regex: search, $options: "i"}
+        $or: [
+            { agencyName: { $regex: search, $options: "i"} },
+            { "trip.destination" : { $regex: search, $options: "i"} }
+        ]
+    };
+
+    try {
+        const agencies = await Agency.find(query).sort({createdAt: -1})
+        .skip(page*limit)
+        .limit(limit);
+
+        const result = await Agency.countDocuments(query);
+        
+        const response = {
+            error: false,
+            result,
+            limit,
+            page: page + 1,
+            agencies
+        }
+
+        return next(
+            res.status(200).json(response)
+        )
+    } catch (error) {
+        return next (
+            res.status(404).json({
+                message : `An Error Occurred: ${error}`
+            })
+        )
     }
-
-    const agencies = await Agency.find(query).sort({createdAt: -1})
-                    .skip(page*limit)
-                    .limit(limit);
-
-    const result = await Agency.countDocuments(query)
-    
-    const response = {
-        error: false,
-        result,
-        limit,
-        page: page + 1,
-        agencies
-    }
-
-    return next(
-        res.status(200).json(response)
-    )
-    
 };
 
 

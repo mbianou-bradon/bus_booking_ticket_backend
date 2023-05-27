@@ -10,7 +10,7 @@ router.get("/", getAllUsers)
 router.get("/:id", getUser)
 
 // Create a New User 
-router.post("/:id", createUser)
+router.post("/", createUser)
 
 // Update a User
 router.patch("/:id", updateUser)
