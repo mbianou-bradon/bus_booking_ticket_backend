@@ -1,5 +1,5 @@
 import Express from "express"
-import { createUser, deleteUser, getAllUsers, getUser, updateUser } from "../controllers/userController";
+import { createUser, deleteUser, getAllUsers, getUser, getUserByPhoneNumber, updateUser } from "../controllers/userController";
 
 const router = Express.Router();
 
@@ -8,6 +8,9 @@ router.get("/", getAllUsers)
 
 // Get a Single User 
 router.get("/:id", getUser)
+
+// Get a Single User by phone number
+router.get("/phone/:phoneNumber", getUserByPhoneNumber);
 
 // Create a New User 
 router.post("/", createUser)

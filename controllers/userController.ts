@@ -64,6 +64,32 @@ export const getUser = async(req: Express.Request, res:Express.Response, next:an
 };
 
 /**
+ * getUserByPhoneNumber - Get One User from the Database with a particular id
+ * @req : Incoming request argument
+ * @res : response argument
+ * @next : Function that proceed to the next Middleware
+ * 
+ * Return : return the fetched data if positive or error message if fails
+ * 
+ */
+export const getUserByPhoneNumber = async(req: Express.Request, res:Express.Response, next:any)=>{
+    const { phoneNumber }  = req.params;
+   
+    const user = await User.findOne({ phoneNumber : phoneNumber })
+
+    if(!user){
+        return res.status(404).json({message: "User Doesn't exist! Not Found!"})
+    }
+
+    return next(
+        res.status(201).json({
+            status: "OK",
+            data: user,
+        })
+    )
+};
+
+/**
  * getAllUsers - Get all Users from the Database and sort it from latest to oldest
  * @req : Incoming request argument
  * @res : response argument
